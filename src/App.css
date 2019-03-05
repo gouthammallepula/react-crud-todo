@@ -2,8 +2,13 @@
   float: right;
 }
 
+.todoTitle{
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+}
 
-
+.todoText{
+  font-family: 'Josefin Sans', sans-serif;
+}
 .App {
   text-align: center;
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const ListItem = (props) => {
     return <li className="list-group-item">
