@@ -2,6 +2,16 @@
   float: right;
 }
 
+.bg {
+  height: 200px;
+  width: 200px;
+  margin-top: 2em;
+}
+
+.load {
+  size: 3em;
+}
+
 .todoTitle{
   font-family: 'ZCOOL QingKe HuangYou', cursive;
 }

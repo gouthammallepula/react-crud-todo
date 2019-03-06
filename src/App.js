@@ -47,9 +47,9 @@ class App extends Component {
     });
   };
   generateTodoID() {
-    const lastTodo = this.state.todos[this.state.todos.length - 1];
+    let lastTodo = this.state.todos[this.state.todos.length - 1];
     if (lastTodo) {
-      return lastTodo + 1;
+      return lastTodo.id + 1;
     }
     return 1;
   };
@@ -88,7 +88,7 @@ class App extends Component {
     todos[this.state.editingIndex] = response.data;
     this.setState({
       todos: todos,
-      bool: false,
+      editing: false,
       editingIndex: null,
       newTodo: ""
     });
@@ -106,7 +106,7 @@ class App extends Component {
     const todo = this.state.todos[index];
     this.setState({
       newTodo: todo.name,
-      bool: true,
+      editing: true,
       editingIndex: index
     });
   };
@@ -131,34 +131,38 @@ class App extends Component {
     // console.log(this.state.newTodo);
     return (
       <div className="container center todoText">
-        <h2 className="text-center p-2 todoTitle">Add Todos!</h2>
-        <input name="input" value={this.state.newTodo} onChange={this.handleChange} type="text" className="my-4 form-control" placeholder="Enter text..." />
-        {
-          this.state.notification &&
-          <div className="alert alert-success">
-            <p className="text-center">{this.state.notification}</p>
+        <div className="row">
+          <div className="col">
+            <h2 className="text-center p-2 todoTitle">Add Todos!</h2>
+            <input name="input" value={this.state.newTodo} onChange={this.handleChange} type="text" className="my-4 form-control" placeholder="Enter text..." />
+            {
+              this.state.notification &&
+              <div className="alert alert-success">
+                <p className="text-center">{this.state.notification}</p>
+              </div>
+            }
+            {
+              this.state.notificationDanger &&
+              <div className="alert alert-danger">
+                <p className="text-center">{this.state.notificationDanger}</p>
+              </div>
+            }
+            <button onClick={this.state.editing ? this.updateTodo : this.addTodo} className="btn-success form-control mb-3"> {this.state.editing ? 'Update Todo' : 'Add Todo'} </button>
+            {
+              this.state.loading &&
+              <img className="image-fluid rounded mx-auto d-block bg" src={loadingGif} alt="" />
+            }
+            <ul hidden={this.state.editing || this.state.loading} className="list-group">
+              {this.state.todos.map((item, index) => {
+                return <ListItem
+                  item={item} key={index}
+                  editTodo={() => { this.editTodo(index); }}
+                  deleteTodo={() => { this.deleteTodo(index); }}
+                />;
+              })}
+            </ul>
           </div>
-        }
-        {
-          this.state.notificationDanger &&
-          <div className="alert alert-danger">
-            <p className="text-center">{this.state.notificationDanger}</p>
-          </div>
-        }
-        <button onClick={this.state.bool ? this.updateTodo : this.addTodo} className="btn-success form-control mb-3"> {this.state.bool ? 'Update Todo' : 'Add Todo'} </button>
-        {
-          this.state.loading &&
-          <img src={loadingGif} />
-        }
-        <ul hidden={this.state.editing || this.state.loading} className="list-group">
-          {this.state.todos.map((item, index) => {
-            return <ListItem
-              item={item} key={index}
-              editTodo={() => { this.editTodo(index); }}
-              deleteTodo={() => { this.deleteTodo(index); }}
-            />;
-          })}
-        </ul>
+        </div>
       </div>
     );
   }
